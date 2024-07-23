@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import patientService from "../../services/patients";
 import { Patient } from "../../types";
-import CodeDetail from "../CodeDetail";
+import EntriesList from "./EntriesList";
 
 const PatientDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -29,21 +29,7 @@ const PatientDetail = () => {
           <h3>{patient.name}</h3>
           <p>ssh: {patient.ssn}</p>
           <p>occupation: {patient.occupation}</p>
-          <div>
-            <h4>Entries</h4>
-            {patient.entries.map((entry) => (
-              <div key={entry.id}>
-                {entry.date} {entry.description}{" "}
-                <ul>
-                  {entry.diagnosisCodes?.map((code) => (
-                    <li key={code}>
-                      {code} <CodeDetail code={code} />
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
+          <EntriesList entries={patient.entries} />
         </>
       )}
     </div>

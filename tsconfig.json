@@ -18,7 +18,12 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+
+    /* Añadido para evitar el uso de tipos any y mejorar el tipado */
+    "noImplicitAny": true, // <- Línea añadida
+    "strictPropertyInitialization": true, // <- Línea añadida
+    "forceConsistentCasingInFileNames": true // <- Línea añadida
   },
   "include": ["src"],
   "references": [{ "path": "./tsconfig.node.json" }]
