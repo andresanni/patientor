@@ -9,7 +9,7 @@ const HealthCheckEntryDetails = (props: HealthCheckEntryDetailsProps) => {
 
   return (
     <div>
-      <h6>Health Check Entry</h6>
+      <h5>Health Check Entry</h5>
       <div>
         <p>Date: {entry.date}</p>
         <p>Specialist: {entry.specialist}</p>

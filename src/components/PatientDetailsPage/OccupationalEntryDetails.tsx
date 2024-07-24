@@ -10,7 +10,7 @@ const OccupationalEntryDetails = (props: OccupationalEntryDetailsProps) => {
 
   return (
     <div>
-      <h6>Occupational Entry</h6>
+      <h5>Occupational Entry</h5>
       <div>
         <p>Date: {entry.date}</p>
         <p>Specialist: {entry.specialist}</p>

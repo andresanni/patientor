@@ -9,7 +9,7 @@ const HospitalEntryDetails = (props: HospitalEntryDetailsProps) => {
 
   return (
     <div>
-      <h6>Hospital Entry</h6>
+      <h5>Hospital Entry</h5>
       <div>
         <p>Date: {entry.date}</p>
         <p>Specialist: {entry.specialist}</p>

@@ -1,3 +1,4 @@
+import { Button } from "@mui/material";
 import { Entry } from "../../types";
 import EntryDetail from "./EntryDetail";
 
@@ -12,8 +13,11 @@ const EntriesList = (props: EntriesListProps) => {
     <div>
       <div>
         <h4>Entries</h4>
+        <Button variant="contained" color="primary">Add new</Button>
         {entries.map((entry) => (
-          <EntryDetail entry={entry} />
+          <div style={{border:"1px solid"}} key= {entry.id}>
+            <EntryDetail entry={entry} />
+          </div>
         ))}
       </div>
     </div>
