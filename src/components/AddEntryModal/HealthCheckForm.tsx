@@ -1,4 +1,11 @@
-import { TextField, Grid, Button, Select, MenuItem, SelectChangeEvent } from "@mui/material";
+import {
+  TextField,
+  Grid,
+  Button,
+  Select,
+  MenuItem,
+  SelectChangeEvent,
+} from "@mui/material";
 import { SyntheticEvent, useState } from "react";
 import patientService from "../../services/patients";
 import { EntryWithoutId, Entry, HealthCheckRating } from "../../types";
@@ -10,45 +17,60 @@ type HealthCheckFormProps = {
   handleAddEntry: (entry: Entry) => void;
 };
 
-interface RatingOption{
-  value: HealthCheckRating,
-  label: string
+interface RatingOption {
+  value: HealthCheckRating;
+  label: string;
 }
 
 const HealthCheckForm = (props: HealthCheckFormProps) => {
   const [description, setDescription] = useState("");
   const [date, setDate] = useState("");
   const [specialist, setSpecialist] = useState("");
-  const [healthCheckRating, setHealthCheckRating] = useState(HealthCheckRating.Healthy);
+  const [healthCheckRating, setHealthCheckRating] = useState(
+    HealthCheckRating.Healthy
+  );
+  const [diagnosisCodeInput, setDiagnosisCodeInput] = useState("");
 
   const navigate = useNavigate();
 
-  const healthCheckRatingOptions:RatingOption[] = Object.keys(HealthCheckRating)
-  .filter(key => isNaN(Number(key))) 
-  .map(key => ({
-    label: key,
-    value: HealthCheckRating[key as keyof typeof HealthCheckRating]
-  }));
-
-  console.log(healthCheckRatingOptions);
-
+  const healthCheckRatingOptions: RatingOption[] = Object.keys(
+    HealthCheckRating
+  )
+    .filter((key) => isNaN(Number(key)))
+    .map((key) => ({
+      label: key,
+      value: HealthCheckRating[key as keyof typeof HealthCheckRating],
+    })); //?
 
   const addEntry = async (event: SyntheticEvent) => {
     event.preventDefault();
-    const newEntry = {
+
+    const diagnosisCodesArray: Array<string> = diagnosisCodeInput
+      .split(",")
+      .map((code) => code.trim())
+      .filter((code) => code !== "");
+
+    let newEntry = {
       description,
       date,
       specialist,
-      healthCheckRating: Number(healthCheckRating),
+      healthCheckRating,
       type: "HealthCheck",
-    } as unknown as EntryWithoutId;
+    } as EntryWithoutId;
+
+    if (diagnosisCodesArray.length > 0) {
+      newEntry = {
+        ...newEntry,
+        diagnosisCodes: diagnosisCodesArray,
+      };
+    }
+
     try {
-      const addedEnty = await patientService.addEntry(
+      const addedEntry = await patientService.addEntry(
         props.patientId,
         newEntry
       );
-      console.log(addedEnty);
-      props.handleAddEntry(addedEnty);
+      props.handleAddEntry(addedEntry);
       navigate(`/patients/${props.patientId}`);
       props.onClose();
     } catch (error) {
@@ -56,10 +78,9 @@ const HealthCheckForm = (props: HealthCheckFormProps) => {
     }
   };
 
-  const onRatingChange =(event: SelectChangeEvent<unknown>)=>{
-       const value = event.target.value as number;
-       setHealthCheckRating(value as HealthCheckRating);     
-       console.log(healthCheckRating); 
+  const onRatingChange = (event: SelectChangeEvent<unknown>) => {
+    const value = event.target.value as number;
+    setHealthCheckRating(value as HealthCheckRating);
   };
 
   return (
@@ -84,23 +105,26 @@ const HealthCheckForm = (props: HealthCheckFormProps) => {
             value={specialist}
             onChange={({ target }) => setSpecialist(target.value)}
           />
-
+          <TextField
+            label="Códigos de Diagnóstico"
+            value={diagnosisCodeInput}
+            onChange={({ target }) => setDiagnosisCodeInput(target.value)}
+            placeholder="Ingrese códigos de diagnóstico separados por comas"
+            fullWidth
+          />
           <Select
-          label="Health Rating"
-          fullWidth
-          value={healthCheckRating}
-          onChange={onRatingChange}
-        >
-        {healthCheckRatingOptions.map(option =>
-          <MenuItem
-            key={option.label}
-            value={option.value}
+            label="Health Rating"
+            fullWidth
+            value={healthCheckRating}
+            onChange={onRatingChange}
           >
-            {option.label
-          }</MenuItem>
-        )}
-        </Select>
-          
+            {healthCheckRatingOptions.map((option) => (
+              <MenuItem key={option.label} value={option.value}>
+                {option.label}
+              </MenuItem>
+            ))}
+          </Select>
+
           <Grid>
             <Grid item>
               <Button

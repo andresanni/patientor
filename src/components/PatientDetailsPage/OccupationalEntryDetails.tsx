@@ -1,5 +1,5 @@
 import { OccupationalHealthCareEntry } from "../../types";
-import CodeDetail from "./CodeDetail";
+import CodeList from "./CodeList";
 
 type OccupationalEntryDetailsProps = {
   entry: OccupationalHealthCareEntry;
@@ -17,16 +17,7 @@ const OccupationalEntryDetails = (props: OccupationalEntryDetailsProps) => {
         <p>Description: {entry.description}</p>
         <p>Employer Name: {entry.employerName}</p>
         {entry.diagnosisCodes && (
-          <div>
-
-            <ul>                
-              {entry.diagnosisCodes.map((code) => (
-                <li key={code}>
-                  {code} <CodeDetail code={code} />
-                </li>
-              ))}
-            </ul>
-          </div>
+          <CodeList diagnosisCodes={entry.diagnosisCodes}/>          
         )}
       </div>
     </div>

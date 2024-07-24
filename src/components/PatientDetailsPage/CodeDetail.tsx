@@ -10,13 +10,18 @@ const CodeDetail = (props: CodeDetailProps) => {
 
   useEffect(() => {
     const fetchName = async (code: string) => {
-      const diagnose = await diagnoseService.getByCode(code);
-      setName(diagnose.name);
+      try{
+        const diagnose = await diagnoseService.getByCode(code);
+        setName(diagnose.name);
+      }
+      catch(error){
+        setName("Not valid code: " + props.code);
+      }
     };
     fetchName(props.code);
   }, [props.code]);
 
-  return <>{name}</>;
+  return <>{ name }</>;
 };
 
 export default CodeDetail;

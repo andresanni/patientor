@@ -1,4 +1,5 @@
 import { HospitalEntry } from "../../types";
+import CodeList from "./CodeList";
 
 type HospitalEntryDetailsProps = {
   entry: HospitalEntry;
@@ -17,6 +18,9 @@ const HospitalEntryDetails = (props: HospitalEntryDetailsProps) => {
         <p>Discharge :</p> 
         <p>Date: {entry.discharge.date}</p>
         <p>Criteria: {entry.discharge.criteria}</p>
+        {entry.diagnosisCodes && (
+          <CodeList diagnosisCodes={entry.diagnosisCodes}/>          
+        )}
       </div>
     </div>
   );

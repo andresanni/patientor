@@ -71,9 +71,10 @@ const EntriesList = (props: EntriesListProps) => {
             Hospital
           </MenuItem>
         </Menu>
+        
         {entriesState.map((entry) => (
           <div style={{ border: "1px solid" }} key={entry.id}>
-            <EntryDetail entry={entry} />
+            <EntryDetail entry={ entry } />
           </div>
         ))}
       </div>
