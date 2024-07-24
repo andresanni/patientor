@@ -29,7 +29,7 @@ const PatientDetail = () => {
           <h3>{patient.name}</h3>
           <p>ssh: {patient.ssn}</p>
           <p>occupation: {patient.occupation}</p>
-          <EntriesList entries={patient.entries} />
+          <EntriesList patientId = {patient.id}entries={patient.entries} />
         </>
       )}
     </div>
