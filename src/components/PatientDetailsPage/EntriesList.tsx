@@ -1,17 +1,9 @@
 import React, { useState } from "react";
-import {
-  Button,
-  Menu,
-  MenuItem,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-} from "@mui/material";
+import { Button } from "@mui/material";
 import { Entry } from "../../types";
 import EntryDetail from "./EntryDetail";
-import HealthCheckForm from "../AddEntryModal/HealthCheckForm";
-import OccupationalHealthcareForm from "../AddEntryModal/OccupationalHealthcareForm";
-import HospitalForm from "../AddEntryModal/HospitalForm";
+import AddEntryModal from "../AddEntryModal";
+import SelectEntryToAddMenu from "../AddEntryModal/SelectEntryToAddMenu";
 
 type EntriesListProps = {
   entries: Array<Entry>;
@@ -47,6 +39,7 @@ const EntriesList = (props: EntriesListProps) => {
   const handleAddEntry = (newEntry: Entry) => {
     setEntriesState([...entriesState, newEntry]);
   };
+  
   return (
     <div>
       <div>
@@ -54,57 +47,27 @@ const EntriesList = (props: EntriesListProps) => {
         <Button variant="contained" color="primary" onClick={handleClick}>
           Add new
         </Button>
-        <Menu
+
+        <SelectEntryToAddMenu
           anchorEl={anchorEl}
-          open={Boolean(anchorEl)}
-          onClose={handleClose}
-        >
-          <MenuItem onClick={() => handleMenuItemClick("HealthCheck")}>
-            Health Check
-          </MenuItem>
-          <MenuItem
-            onClick={() => handleMenuItemClick("OccupationalHealthcare")}
-          >
-            Occupational Healthcare
-          </MenuItem>
-          <MenuItem onClick={() => handleMenuItemClick("Hospital")}>
-            Hospital
-          </MenuItem>
-        </Menu>
-        
+          handleClose={handleClose}
+          handleMenuItemClick={handleMenuItemClick}
+        />
+
         {entriesState.map((entry) => (
           <div style={{ border: "1px solid" }} key={entry.id}>
-            <EntryDetail entry={ entry } />
+            <EntryDetail entry={entry} />
           </div>
         ))}
       </div>
 
-      <Dialog open={openDialog} onClose={handleDialogClose}>
-        <DialogTitle>Add New Entry</DialogTitle>
-        <DialogContent>
-          {selectedEntryType === "HealthCheck" && (
-            <HealthCheckForm
-              patientId={props.patientId}
-              onClose={handleDialogClose}
-              handleAddEntry={handleAddEntry}
-            />
-          )}
-          {selectedEntryType === "OccupationalHealthcare" && (
-            <OccupationalHealthcareForm
-              patientId={props.patientId}
-              onClose={handleDialogClose}
-              handleAddEntry={handleAddEntry}
-            />
-          )}
-          {selectedEntryType === "Hospital" && (
-            <HospitalForm
-              patientId={props.patientId}
-              onClose={handleDialogClose}
-              handleAddEntry={handleAddEntry}
-            />
-          )}
-        </DialogContent>
-      </Dialog>
+      <AddEntryModal
+        openDialog={openDialog}
+        selectedEntryType={selectedEntryType}
+        patientId={props.patientId}
+        handleDialogClose={handleDialogClose}
+        handleAddEntry={handleAddEntry}
+      />
     </div>
   );
 };
